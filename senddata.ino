@@ -2,7 +2,11 @@
 
  
 void setup() {
+<<<<<<< HEAD
   // put   your setup code here, to run once:  
+=======
+  // put your setup code here, to run once:  
+>>>>>>> ourproject
  
     Serial.begin(115200); 
     input.reserve(200);
