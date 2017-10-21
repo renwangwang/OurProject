@@ -1,0 +1,12 @@
+1、
+CAN总线
+PC  在电脑上建立数据库，为arduino提供数据
+CANTOOL装置
+arduino  给arduino编程，正确处理各种数据，接受返回
+APP
+手机端进行通信
+2、
+CANTOOL装置
+在arduino端把数据写死，每次直接从arduino返回数据，没有CAN总线
+APP
+手机端进行通信
