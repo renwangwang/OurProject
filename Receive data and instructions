@@ -1,0 +1,147 @@
+String input = "";  
+boolean flag = false; 
+int state = 0; //表示open的状态int state=0; 
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(115200);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  if (flag) 
+  {
+   // Serial.println(input);
+    dataProcess(input);
+    input="";
+    flag=false;
+  }
+}
+void serialEvent() 
+{
+  while (Serial.available()) 
+  {
+    char inChar=(char)Serial.read();
+    input+=inChar;
+    if (inChar=='\r') 
+    {
+      flag=true;
+    }
+  }
+}
+void dataProcess(String command)
+{
+  if(command==NULL||command.length()==0)
+     sendData(0);
+  char type=command.charAt(0);
+  command = command.substring(0,command.length()-1);
+  if(type=='V'&&command.length()==1)
+  {
+   sendData(1);
+    
+  }
+  else if(type=='O'&&command.charAt(1)=='1'&&command.length()==2)
+  {
+    open();
+  }
+  else if(type=='C'&&command.length()==1)
+  {
+    close();
+  }
+  else if(type=='S'&&command.length()==2)
+  {
+    setSpeed(command.charAt(1));
+  }
+else if(type=='T' || type=='t')
+{
+sendFrameData(command,type);
+}
+  else 
+  {
+    sendData(0);
+  }
+}
+ 
+void sendFrameData(String data,char type)
+{
+  int normal;
+  if(state == 1)
+  {
+    sendData(0);
+    return;
+    }
+   if(type == 'T')
+      normal = 10;
+   else
+      normal = 5;
+
+    int len = data.length();
+    for(int i = 1; i < len; i++)
+    {
+      if(!((data[i] >= '0'&& data[i] <= '9') || ( data[i] >= 'A'&&data[i] <= 'F')))
+        
+        {
+          sendData(0);
+          return;
+          }
+       
+      }
+      int canLen = data.charAt(4)-'0';
+      if(len < normal || canLen <= 0 || canLen >8 || len != normal + canLen*2)
+      {
+        sendData(0);
+        return;
+        }
+        sendData(1);
+  }
+void setSpeed(char c) 
+{
+  if(state==0)
+  {
+    int level=(int)(c-'0');
+    if(level<0||level >8)
+      sendData(0);
+    else
+    {
+     sendData(1);
+    }
+  }
+  else
+  {
+    sendData(0);
+  }
+}
+void close() 
+{
+  if(state==1)
+  {
+    state=0;
+    sendData(1);
+  }
+  else
+  {
+   sendData(0);
+  }
+}
+void open() 
+{
+  if(state==0)
+  {
+    state=1;
+    sendData(1);
+  }
+  else
+  {
+    sendData(0);
+  }
+}
+void sendData(int flag)
+{
+  if(flag == 0){
+    Serial.write((char)7);
+    Serial.println("bhjdscvsdjc");}
+   else
+   {
+    Serial.print("SV2.5-HV2.0");
+    Serial.write("\r");
+    }
+}
