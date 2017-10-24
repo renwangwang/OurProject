@@ -50,6 +50,7 @@ void dataProcess(String command)
   {
    sendData(1);
    Serial.println("SV2.5-HV2.0");
+   return;
     
   }
   else if(type=='O'&&command.charAt(1)=='1'&&command.length()==2)
@@ -93,7 +94,6 @@ void sendSelfData()
       break;
       }
     } 
-    //close();
   }
 void sendFrameData(String data,char type)
 {
@@ -157,7 +157,6 @@ void close()
    sendData(0);
    
   }
- 
 }
 void open() 
 {
