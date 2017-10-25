@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1508936867 source:d:\github\git\ourproject\datagenerate\datagenerate\main.cpp
+	<iostream>
+	<cstdio>
+	<string>
+	<stdio.h>
+	<fstream>
+	<sstream>
+	<time.h>
+	<math.h>
+	<cstdlib>
+
