@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1508914865 source:d:\github\git\ourproject\dataprocess\main.cpp
+	<iostream>
+	<cstdio>
+	<string>
+	<stdio.h>
+	<fstream>
+	<sstream>
+
