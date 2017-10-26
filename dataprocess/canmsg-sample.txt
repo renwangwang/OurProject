@@ -125,3 +125,7 @@ BO_ 868 PTC_1: 8 PTC
  SG_ PTC_Current : 15|8@0+ (0.2,0) [0|25.4] "A"  HVAC
  SG_ PTCPwrAct : 23|10@0+ (10,0) [0|8000] "w"  HVAC
  SG_ PTCActst : 26|3@0+ (1,0) [0|7] ""  HVAC
+ 
+ 
+ 
+ 
