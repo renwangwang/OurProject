@@ -23,6 +23,7 @@ void loop()
         Serial.print(i + 2);
         Serial.print(" is ");
         Serial.println(comdata[i]);
+        //System.out.println(messageID);
       }
     }
     comdata = "";
