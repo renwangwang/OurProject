@@ -27,9 +27,8 @@ struct sub_data
 };
 */
 
-ifstream in("canmsg-sample1.txt");
-ofstream out("canmsg-sample_data.txt");
-ofstream out1("canmsg-sample_phy.txt");
+ifstream in("comfort1.txt");
+ofstream out("comfort_data.txt");
 
 void transTo(int data, int num)
 {
@@ -55,7 +54,6 @@ unsigned long long calculate(double a,double b,double left,double right)
     long l = (left - b)/a;
     long r = (right - b)/a;
     x = (rand()%(r-l+1))+l;
-    out1<<x<<endl;
     return x;
 }
 
@@ -81,19 +79,68 @@ void writeMessage(char message[],int start,int leng,char type,double a,double b,
 
     if(type == '1')
     {
-        int p = 0;
-        int st = start;
-        while(p < numCnt)
+        int st;
+        int row = start/8;
+        int temp = start - index[row] + 1;
+
+        if(temp >= leng)
         {
-            message[st] = ((area>>p)&1) + '0';
-            st++;
-            p++;
+            int p,st;
+            if(numCnt < leng)
+            {
+                p = 0;
+                st = start - leng +1;
+                while(numCnt)
+                {
+                    message[st] = ((area>>p)&1) + '0';
+                    st++;
+                    numCnt--;
+                    p++;
+                }
+                while(st<= start)
+                {
+                    message[st] = '0';
+                    st++;
+
+                }
+            }
+            else if(numCnt == leng)
+            {
+                p = 0;
+                st = start - leng +1;
+                while(st <= start)
+                {
+                    message[st] = ((area>>p)&1) + '0';
+                    st++;
+                    p++;
+                }
+            }
+            else
+            {
+                cout<<"the input is wrong."<<endl;
+            }
         }
-        while(p < leng)
+        else
         {
-            message[st] = '0';
-            st++;
-            p++;
+            int q = leng - temp;
+            int q0 = q/8;
+            int a0 = q - 8 * q0;
+            if(a0 == 0)
+                st = index[row - q0];
+            else
+                st = index[row - q0 - 1] + 8 - a0;
+            int p = 0;
+            while(p < numCnt)
+            {
+                message[st] = ((area>>p)&1) + '0';
+                    st++;
+                    p++;
+            }
+            while(st <= start)
+            {
+                message[st] = '0';
+                    st++;
+            }
         }
     }
     if(type == '0')
@@ -261,8 +308,8 @@ void sendout(char message[],int length)
     {
         print(message,4,start0);
         print(message,4,start1);
-        start0 += 8;
-        start1 += 8;
+        start0 += 12;
+        start1 += 12;
     }
 
 }
@@ -274,7 +321,7 @@ int main()
     string line;
     char message[64];
 
-    int id,length,dataCount;
+    int id,length;
 
     int start,leng;
     double a,b,left,right;
@@ -294,16 +341,14 @@ int main()
                 if(cnt > 0)
                 {
                     //根据上一组数据的全部信息得到的message，根据length输出can信息
-                    if(dataCount != 0)
-                       sendout(message,length);
+                    sendout(message,length);
                     out<<endl;
-                    out1<<endl;
                 }
 
                 out<<'t';
 
                 for(int i = 0; i < 64;i++)
-                   message[i] = '0';
+                   message[i] = 0;
                 int c,d;
                 int blank = 0;
                 //将ID和长度输出
@@ -318,14 +363,13 @@ int main()
                             stringstream ss1;
                             ss1<<line.substr(2,i-2);
                             ss1>>id;
-                            out1<<id<<endl;
                             //输出id
                             transTo(id,3);
                             c = i;
                         }
                         if(blank == 3)
                         {
-                            d = i;
+                            //d = i;
                             stringstream ss2;
                             ss2<<line.at(c+1);
                             ss2>>length;
@@ -333,13 +377,6 @@ int main()
                             transTo(length,1);
                         }
                     }
-                    if(i == len -1)
-                    {
-                        stringstream ss;
-                        ss<<line.substr(d+1,i-d);
-                        ss>>dataCount;
-                    }
-
                 }
                 cnt++;
             }
