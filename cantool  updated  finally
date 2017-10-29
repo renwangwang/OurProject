@@ -179,3 +179,11 @@ void sendData(int flag)
     Serial.write("\r");
     }
 }
+
+
+
+
+
+
+
+
