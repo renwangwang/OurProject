@@ -36,3 +36,87 @@ void loop()
 
 
 
+
+
+
+
+
+//接收代码：
+#include <SoftwareSerial.h>
+SoftwareSerial mySerial(3,2);
+void setup() {
+  Serial.begin(9600);
+  mySerial.begin(9600);
+  pinMode(9,OUTPUT);
+}
+
+void loop() {
+  while(mySerial.available() > 0){
+    char c = mySerial.read();
+    Serial.write(c);
+  }
+}
+
+
+
+//发送代码：
+#include <SoftwareSerial.h>
+
+SoftwareSerial mySerial(3,2);
+
+bool a=0;
+
+int b=0;
+
+void setup() {
+
+mySerial.begin (9600);
+
+Serial.begin(9600);
+
+pinMode(9,OUTPUT);
+
+}
+
+void loop() {
+
+if(a==0)
+
+{
+
+digitalWrite(9,HIGH);
+
+Serial.println ("pin9 is HIGH");
+
+mySerial.println("pin9 is HIGH");
+
+}
+
+else
+
+{
+
+digitalWrite(9,LOW);
+
+Serial.println ("pin9 is LOW");
+
+mySerial.println("pin9 is LOW");
+
+}
+
+b++;
+
+a=b%2;
+
+delay(1000);
+
+}
+
+
+
+
+
+
+
+
+
